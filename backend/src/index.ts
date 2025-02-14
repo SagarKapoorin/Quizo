@@ -1,9 +1,10 @@
-import express from "express";
+import express, { Router } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import helmet from "helmet";
 import { Request, Response, NextFunction } from "express";
 import morgan from "morgan";
+import { router } from "./routes";
 dotenv.config({ path: "../../.env" });
 
 const app = express();
@@ -20,7 +21,7 @@ app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use(morgan("common"));
 app.use(express.json({ limit: "30mb" }));
 app.use(express.urlencoded({ limit: "30mb", extended: true }));
-
+app.use("/api",router);
 
 
 const PORT: string = process.env.PORT || "3000";
