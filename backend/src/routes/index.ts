@@ -10,7 +10,7 @@ export const router=Router();
 router.post('/login',async(req, res) => {
   const { username, password }=req.body;
   try{
-  if(username==="test" && password==="password"){
+  if(username==="test" && password==="test"){
     const user=await prisma.user.findUnique({ where: {id:"c0e8005a-f840-4a62-b05f-900c8f414d6c" } });
     req.userId="c0e8005a-f840-4a62-b05f-900c8f414d6c";
     res.status(200).json({ message: 'Login successful',user });
