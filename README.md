@@ -1,5 +1,5 @@
 # Quizo - Quiz Management System
-
+live link: https://quizoo-it.netlify.app/
 ## API Documentation
 ### **Authentication**
 - `POST /api/demo/user` → Hardcoded login (`username: test, password: test`)
@@ -106,7 +106,6 @@ redisUrl="your_redis_connection_url"
 ## Deliverables
 - **GitHub Repository:** [Quizo GitHub Repo](https://github.com/SagarKapoorin/Quizo)
 - **Setup Instructions:** Included in this README.
-- **Live Demo (Optional):** Provide a deployed URL if available.
 
 ---
 ### **Made by:** Sagar Kapoor
