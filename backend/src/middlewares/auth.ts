@@ -8,7 +8,7 @@ export const authenticate = (req: Request, res: Response, next: NextFunction) =>
   }
   try {
     if(token==="test"){
-        req.userId="c0e8005a-f840-4a62-b05f-900c8f414d6c"
+        req.userId="23c343dd-639c-40a2-ac01-4195f850bd0e"
         next();
     }else{
         res.status(401).json({message:"Token not matched"});

@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/lib/auth';
 import { Button } from '@/components/ui/button';
@@ -9,37 +8,13 @@ import {
   Trash2,
   ClipboardList,
 } from 'lucide-react';
-
-interface Quiz {
-  id: string;
-  title: string;
-  description: string;
-  createdAt: string;
-}
-
-// Demo data
-const demoQuizzes: Quiz[] = [
-  {
-    id: '1',
-    title: 'Mathematics Basics',
-    description: 'Test fundamental math concepts including arithmetic and algebra',
-    createdAt: '2024-03-15',
-  },
-  {
-    id: '2',
-    title: 'Science Quiz',
-    description: 'General science knowledge covering physics, chemistry, and biology',
-    createdAt: '2024-03-14',
-  },
-];
+import { useEffect } from 'react';
 
 export default function Dashboard() {
-  const {user, logout} = useAuth();
+  const {user, logout, quizzes, setQuizzes, getQuiz} = useAuth();
 //   console.log(user)
   const navigate=useNavigate();
-  const [quizzes]=useState<Quiz[]>(demoQuizzes);
 //   console.log(quizzes)
-  const [deleteId, setDeleteId] = useState<string | null>(null);
 
   const handleLogout = () => {
     logout();
@@ -48,10 +23,28 @@ export default function Dashboard() {
 
   const handleDelete=(id: string)=>{
     if (confirm('Are you sure you want to delete this quiz?')) {
-      //deleting from backend
+      // Deleting from backend
+      fetch(`${import.meta.env.VITE_BACKEND_URL}quizzes/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer test`,
+        },
+      })
+        .then((response) => {
+          if (!response.ok) {
+        throw new Error('Failed to delete quiz');
+          }
+          setQuizzes((prevQuizzes) => prevQuizzes.filter((quiz) => quiz.id !== id));
+        })
+        .catch((error) => {
+          console.error('Error deleting quiz:', error);
+        });
       console.log('Deleting quiz:', id);
     }
   };
+  useEffect(() => {
+   getQuiz();
+  }, []);
 
   return (
     <div className="min-h-screen bg-background">
@@ -82,7 +75,7 @@ export default function Dashboard() {
         </div>
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {quizzes.map((quiz) => (
+          {quizzes.length>0 && quizzes.map((quiz) => (
             <div key={quiz.id} className="bg-white rounded-lg shadow-md p-6 space-y-4">
               <div>
                 <h3 className="text-lg font-semibold">{quiz.title}</h3>
@@ -91,7 +84,7 @@ export default function Dashboard() {
                 </p>
               </div>
               <div className="text-sm text-muted-foreground">
-                Created: {new Date(quiz.createdAt).toLocaleDateString()}
+                Created: {new Date(quiz.createdat).toLocaleDateString()}
               </div>
               <div className="flex space-x-2">
                 <Button

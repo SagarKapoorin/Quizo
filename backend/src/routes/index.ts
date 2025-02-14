@@ -11,8 +11,8 @@ router.post('/login',async(req, res) => {
   const { username, password }=req.body;
   try{
   if(username==="test" && password==="test"){
-    const user=await prisma.user.findUnique({ where: {id:"c0e8005a-f840-4a62-b05f-900c8f414d6c" } });
-    req.userId="c0e8005a-f840-4a62-b05f-900c8f414d6c";
+    const user=await prisma.user.findUnique({ where: {id:"23c343dd-639c-40a2-ac01-4195f850bd0e" } });
+    req.userId="23c343dd-639c-40a2-ac01-4195f850bd0e";
     res.status(200).json({ message: 'Login successful',user });
   }
 }catch(err:any){
@@ -21,7 +21,22 @@ router.post('/login',async(req, res) => {
 }
   
 });
-
+//demo user hardcoded
+router.get('/demo/user', async (req, res) => {
+  try {
+    const user = await prisma.user.create({
+      data: {
+        id: '23c343dd-639c-40a2-ac01-4195f850bd0e',
+        username: 'test',
+        password: 'test'
+      }
+    });
+    res.status(200).json({ message: 'User created successfully', user });
+  } catch (err: any) {
+    console.log(err);
+    res.status(500).json({ error: err });
+  }
+});
 // Quiz Routes
 router.post('/quizzes', authenticate, async (req, res) => {
   const { title, description } = req.body;
@@ -44,7 +59,7 @@ router.get('/quizzes', authenticate, async (req, res) => {
     try{
   const quizzes = await prisma.quiz.findMany({
     where: { teacherId: req.userId },
-    select: { id: true, title: true, description: true }
+    select: { id: true, title: true, description: true , createdat:true}
   });
   res.status(200).json(quizzes);
 }catch(err:any){

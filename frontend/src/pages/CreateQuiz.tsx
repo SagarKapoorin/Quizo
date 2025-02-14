@@ -3,8 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ArrowLeft } from 'lucide-react';
+import { useAuth } from '@/lib/auth';
 
 export default function CreateQuiz() {
+  const {quizzes, setQuizzes}=useAuth();
   const navigate=useNavigate();
   const [title, setTitle]=useState('');
 //   console.log(title)
@@ -18,7 +20,25 @@ export default function CreateQuiz() {
       setError('Please fill in all fields');
       return;
     }
-    // saving to backend
+    //saving at backend
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/quizzes`, {
+      method: 'POST',
+      headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer test'
+      },
+      body: JSON.stringify({ title, description })
+    })
+    .then(data => {
+      data.json().then((quiz) => {
+        setQuizzes([...quizzes, { id: quiz.id, title: quiz.title, description: quiz.description, createdat: quiz.createdAt }]);
+        console.log('Success:', quiz);
+      });
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+      setError('Failed to create quiz');
+    });
     console.log({ title, description });
     navigate('/');
   };

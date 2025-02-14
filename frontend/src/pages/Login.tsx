@@ -47,16 +47,16 @@ export default function Login() {
               {error}
             </div>
           )}
-          <div className="space-y-2">
+            <div className="space-y-2">
             <Input
-              type="email"
-              placeholder="Email"
+              type="text"
+              placeholder="Username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
               className="w-full"
             />
-          </div>
+            </div>
           <div className="space-y-2">
             <Input
               type="password"

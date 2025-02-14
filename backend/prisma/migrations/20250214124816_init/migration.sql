@@ -13,6 +13,7 @@ CREATE TABLE "Quiz" (
     "title" TEXT NOT NULL,
     "description" TEXT NOT NULL,
     "teacherId" TEXT NOT NULL,
+    "createdat" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Quiz_pkey" PRIMARY KEY ("id")
 );

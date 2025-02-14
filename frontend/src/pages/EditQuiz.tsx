@@ -3,20 +3,17 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ArrowLeft } from 'lucide-react';
+import { useAuth } from '@/lib/auth';
 
-// Demo data
-const demoQuiz = {
-  id: '1',
-  title: 'Mathematics Basics',
-  description: 'Test fundamental math concepts including arithmetic and algebra',
-};
 
 export default function EditQuiz() {
   const { id } = useParams();
 //   console.log(id)
   const navigate=useNavigate();
-  const [title,setTitle] = useState(demoQuiz.title);
-  const [description,setDescription] = useState(demoQuiz.description);
+  const { quizzes, setQuizzes}=useAuth();
+  const quiz = quizzes.find((quiz) => quiz.id === id);
+  const [title, setTitle] = useState(quiz?.title||'');
+  const [description, setDescription] = useState(quiz?.description||'');
   const [error,setError] = useState('');
 // console.log(description)
   const handleSubmit = (e: React.FormEvent) => {
@@ -25,7 +22,26 @@ export default function EditQuiz() {
       setError('Please fill in all fields');
       return;
     }
-    // backend updationg
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/quizzes/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer test`,
+      },
+      body: JSON.stringify({ title, description }),
+    })
+    .then(response => response.json())
+    .then(data => {
+      setQuizzes((prevQuizzes) => 
+        prevQuizzes.map((quiz) => 
+          quiz.id === id ? { ...quiz, title, description } : quiz
+        )
+      );
+    })
+    .catch(error => {
+      console.error('Error updating quiz:', error);
+      setError('Failed to update quiz');
+    });
     console.log({ title, description });
     navigate('/');
   };
