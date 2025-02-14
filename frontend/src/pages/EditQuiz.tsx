@@ -7,6 +7,7 @@ import { useAuth } from '@/lib/auth';
 
 
 export default function EditQuiz() {
+  //finding params id
   const { id } = useParams();
 //   console.log(id)
   const navigate=useNavigate();
@@ -22,6 +23,7 @@ export default function EditQuiz() {
       setError('Please fill in all fields');
       return;
     }
+    //sending backend request
     fetch(`${import.meta.env.VITE_BACKEND_URL}/quizzes/${id}`, {
       method: 'PUT',
       headers: {
@@ -43,6 +45,7 @@ export default function EditQuiz() {
       setError('Failed to update quiz');
     });
     console.log({ title, description });
+    //navigate to dashboard
     navigate('/');
   };
 

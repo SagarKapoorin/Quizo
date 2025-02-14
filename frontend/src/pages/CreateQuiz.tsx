@@ -40,6 +40,7 @@ export default function CreateQuiz() {
       setError('Failed to create quiz');
     });
     console.log({ title, description });
+    //navigating at dashboard
     navigate('/');
   };
 
