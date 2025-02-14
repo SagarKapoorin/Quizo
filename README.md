@@ -93,7 +93,7 @@ npm run start
 Set up **.env** file in `backend/`:
 ```env
 DATABASE_URL="your_postgresql_connection_url"
-redis_Url="your_redis_connection_url"
+redisUrl="your_redis_connection_url"
 ```
 
 ## Evaluation Criteria
