@@ -5,10 +5,11 @@ import helmet from "helmet";
 import { Request, Response, NextFunction } from "express";
 import morgan from "morgan";
 import { router } from "./routes";
+import { rateLimit } from "./middlewares/redis";
 dotenv.config({ path: "../../.env" });
 
 const app = express();
-
+app.use(rateLimit);
 app.use(
     cors({
       origin: "*",
